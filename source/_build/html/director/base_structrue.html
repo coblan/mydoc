@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.1. 基本架构 &mdash; mydoc 1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1.2. table函数" href="table_fun.html" />
+    <link rel="prev" title="1. 管理后台" href="index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> mydoc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. 管理后台</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.1. 基本架构</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">1.1.1. 页面分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">1.1.2. 数据注入</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">1.1.3. 前后端交互</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="table_fun.html">1.2. table函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html">1.3. fields</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">mydoc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">1. 管理后台</a> &raquo;</li>
+        
+      <li>1.1. 基本架构</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/director/base_structrue.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>1.1. 基本架构<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2>1.1.1. 页面分类<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>管理后台主要由前端页面、数据处理层、model映射数据库三个部分组成。按照前后端以及中间过程的数据类型分析，
+可以分类为</p>
+<ol class="arabic simple">
+<li>包含多行的table型数据。</li>
+<li>包含一行的form型数据。</li>
+</ol>
+<p>所以，管理后台页面可以分为包含table型数据的table页，包含一行数据的form页。</p>
+</div>
+<div class="section" id="id3">
+<h2>1.1.2. 数据注入<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>利用jsonify自定义的标签，在django.template.context中将数据一次性注入前端页面。所以，在前端页面的源代码
+script部分，可以看到所有由后端注入的数据。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">load</span> <span class="n">jsonify</span> <span class="o">%</span><span class="p">}</span>
+
+<span class="n">tabs</span><span class="o">=</span><span class="p">{{</span> <span class="n">tabs</span> <span class="o">|</span> <span class="n">jsonify</span> <span class="o">|</span> <span class="n">default</span><span class="p">:</span><span class="s1">&#39;[]&#39;</span> <span class="p">}}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>1.1.3. 前后端交互<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>传统交互方式是利用url型api来进行交互，但是这样过于麻烦，除非是前后端分离式的开发，否则没有必要。
+在director中，采用了两种前后端的交互方式。</p>
+<dl class="docutils">
+<dt>ajax.py</dt>
+<dd>将函数写在 <code class="docutils literal notranslate"><span class="pre">ajax.py</span></code> 文件中，通过 <code class="docutils literal notranslate"><span class="pre">get_global</span></code> 函数暴露给 <code class="docutils literal notranslate"><span class="pre">director.views.ajax_view</span></code> 接口函数，前端通过请求
+接口，直接调用 <code class="docutils literal notranslate"><span class="pre">app.ajax.py</span></code> 的对应函数</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 后端代码</span>
+<span class="k">def</span> <span class="nf">fun1</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">get_global</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">gloabals</span><span class="p">()</span>
+
+<span class="o">//</span><span class="n">前端代码</span>
+<span class="n">ex</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/d/ajax/</span><span class="si">{app_name}</span><span class="s1">&#39;</span> <span class="n">post_data</span><span class="o">=</span><span class="p">[{</span><span class="n">fun</span><span class="p">:</span><span class="n">xxx</span><span class="p">,</span><span class="n">arg1</span><span class="p">:</span><span class="n">xx</span><span class="p">,</span><span class="n">arg2</span><span class="p">:</span><span class="n">xxx</span><span class="p">}]</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>director</dt>
+<dd>通过一个全局的 <code class="docutils literal notranslate"><span class="pre">director</span></code> 字典，对函数进行命名注册。在js端，可以利用注册名直接调用函数。
+该字典定位在 <code class="docutils literal notranslate"><span class="pre">director.base_data.director</span></code> ，请求的路由是通过 <code class="docutils literal notranslate"><span class="pre">director.ajax.py</span></code>
+的 <code class="docutils literal notranslate"><span class="pre">director_view</span></code> 。</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 通过装饰器</span>
+<span class="nd">@director_view</span><span class="p">(</span><span class="s1">&#39;test.myfun1&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">myfun</span><span class="p">(</span><span class="n">arg1</span><span class="p">):</span>
+    <span class="k">pass</span>
+<span class="c1"># 或者直接用字典注册</span>
+<span class="n">director</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;test.myfun1&#39;</span><span class="p">:</span><span class="n">myfun</span><span class="p">})</span>
+
+<span class="o">//</span><span class="n">前端调用方式为</span>
+<span class="n">ex</span><span class="o">.</span><span class="n">director</span><span class="p">(</span><span class="s1">&#39;test.myfun1&#39;</span><span class="p">,{</span><span class="n">arg1</span><span class="p">:</span><span class="n">xxx</span><span class="p">},</span><span class="n">function</span><span class="p">(</span><span class="n">resp</span><span class="p">){})</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="table_fun.html" class="btn btn-neutral float-right" title="1.2. table函数" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="1. 管理后台" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, coblan
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
